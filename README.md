@@ -3,20 +3,23 @@ Hi
 This script will help to do the troubleshooting in OCP / Origin environment, will be possible collect a lot of information about
  - Projects
  - Pods
- - Detailed descriptions
+ - Detailed description
  - and much more
 
 At the end will be generated one tar that should be send to the Support Team.
 
 To Execute the script., just download and execute
 
+~~~
 ./sosreport_ocp
+~~~
 
 The script will collect a lot of information about OCP and will store everything on dir /tmp/ocp/ocp_report_<date and time>
 
 At the end you will see one message like below
 
 ~~~
+...
 Compacting logs
 tar cpf /tmp/ocp/ocp_report_06.07.17-20.15.tar /tmp/ocp/ocp_report_06.07.17-20.15
 tar: Removing leading `/' from member names

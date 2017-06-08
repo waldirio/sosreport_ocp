@@ -20,7 +20,6 @@ echo $ACTUAL_DIR
 mkdir -p $ACTUAL_DIR
 
 collect_info $TEMP_DIR $ACTUAL_DIR
-
 }
 
 collect_info()
@@ -28,20 +27,20 @@ collect_info()
   DIR_OUT=$2
 
   echo "Collecting user"
-  echo "# oc whoami" 			> $DIR_OUT/oc_whoami
-  oc whoami 				>> $DIR_OUT/oc_whoami
+  echo "# oc whoami" 				> $DIR_OUT/oc_whoami
+  oc whoami 					>> $DIR_OUT/oc_whoami
 
   echo "Collecting nodes"
-  echo "# oc get nodes" 		> $DIR_OUT/oc_get_nodes
-  oc get nodes 				>> $DIR_OUT/oc_get_nodes
+  echo "# oc get nodes" 			> $DIR_OUT/oc_get_nodes
+  oc get nodes 					>> $DIR_OUT/oc_get_nodes
 
   echo "Collecting pods"
-  echo "# oc get pods" 			> $DIR_OUT/oc_get_pods
-  oc get pods 				>> $DIR_OUT/oc_get_pods
+  echo "# oc get pods" 				> $DIR_OUT/oc_get_pods
+  oc get pods 					>> $DIR_OUT/oc_get_pods
 
   echo "Collecting all projects"
-  echo "# oc get projects"		> $DIR_OUT/oc_get_projects
-  oc get projects 			>> $DIR_OUT/oc_get_projects
+  echo "# oc get projects"			> $DIR_OUT/oc_get_projects
+  oc get projects 				>> $DIR_OUT/oc_get_projects
 
 
   echo "Preparing projects structure"

@@ -4,6 +4,7 @@
 # License .....: GPL
 # Date ........: 06/07/2017
 # Developer ...: Waldirio M Pinheiro <waldirio@redhat.com>
+#              : Mauricio Magnani <mmagnani@redhat.com>
 # Description .: Collect information from OCP / Origin
 # Changelog ...: 
 #
@@ -26,21 +27,28 @@ collect_info()
 {
   DIR_OUT=$2
 
+  echo "Collecting user"
+  echo "# oc whoami" 		> $DIR_OUT/oc_whoami
+  oc whoami 			>> $DIR_OUT/oc_whoami
+
   echo "Collecting nodes"
-  oc get nodes > $DIR_OUT/oc_get_nodes
+  echo "# oc get nodes" 	> $DIR_OUT/oc_get_nodes
+  oc get nodes 			>> $DIR_OUT/oc_get_nodes
 
   echo "Collecting pods"
-  oc get pods > $DIR_OUT/oc_get_pods
+  echo "# oc get pods" 		> $DIR_OUT/oc_get_pods
+  oc get pods 			>> $DIR_OUT/oc_get_pods
 
   echo "Collecting all projects"
-  oc get projects > $DIR_OUT/oc_get_projects
+  echo "# oc get projects"	> $DIR_OUT/oc_get_projects
+  oc get projects 		>> $DIR_OUT/oc_get_projects
 
 
   echo "Preparing projects structure"
   
   ProjectDir="$DIR_OUT/projects"
 
-  AllProjects=$(cat $DIR_OUT/oc_get_projects | grep -v ^NAME | awk '{print $1}')
+  AllProjects=$(cat $DIR_OUT/oc_get_projects | grep -v -E '(^NAME|^#)' | awk '{print $1}')
   for b in $AllProjects
   do
     echo "mkdir -p $ProjectDir/$b" 
@@ -64,21 +72,27 @@ pod_desc()
 
   # Connect to the project
   echo "Connecting to the project $ProjectName"
-  oc project $ProjectName > $ProjectDir/$ProjectName/connection_status
-  oc projects > $ProjectDir/$ProjectName/actual_connection
+
+  echo "# oc project $ProjectName"		> $ProjectDir/$ProjectName/connection_status
+  oc project $ProjectName 			>> $ProjectDir/$ProjectName/connection_status
+
+  echo "# oc projects" 				> $ProjectDir/$ProjectName/actual_connection
+  oc projects 					>> $ProjectDir/$ProjectName/actual_connection
 
 
   # Retrieve pod list
   echo "Collecting pods"
-  oc get pods > $ProjectDir/$ProjectName/oc_get_pods
+  echo "# oc get pods" 				> $ProjectDir/$ProjectName/oc_get_pods
+  oc get pods 					>> $ProjectDir/$ProjectName/oc_get_pods
 
 
   # Describe pod
-  AllPods=$(cat $ProjectDir/$ProjectName/oc_get_pods | grep -v ^NAME | awk '{print $1}')
+  AllPods=$(cat $ProjectDir/$ProjectName/oc_get_pods | grep -v -E '(^NAME|^#)' | awk '{print $1}')
   for b in $AllPods
   do
     echo "Collecting describe from all pods from $b"
-    oc describe pod $b > $ProjectDir/$ProjectName/oc_describe_pod_$b
+    echo "# oc describe pod $b" 		> $ProjectDir/$ProjectName/oc_describe_pod_$b
+    oc describe pod $b 				>> $ProjectDir/$ProjectName/oc_describe_pod_$b
   done
 }
 

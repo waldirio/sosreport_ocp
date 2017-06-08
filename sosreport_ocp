@@ -1,0 +1,104 @@
+#!/bin/bash
+
+#
+# License .....: GPL
+# Date ........: 06/07/2017
+# Developer ...: Waldirio M Pinheiro <waldirio@redhat.com>
+# Description .: Collect information from OCP / Origin
+# Changelog ...: 
+#
+
+
+create_structure()
+{
+TEMP_DIR="/tmp/ocp"
+ACTUAL_DATE=$(date +%m.%d.%y-%H.%M)
+
+ACTUAL_DIR="$TEMP_DIR/ocp_report_$ACTUAL_DATE"
+echo $ACTUAL_DIR
+mkdir -p $ACTUAL_DIR
+
+collect_info $TEMP_DIR $ACTUAL_DIR
+
+}
+
+collect_info()
+{
+  DIR_OUT=$2
+
+  echo "Collecting nodes"
+  oc get nodes > $DIR_OUT/oc_get_nodes
+
+  echo "Collecting pods"
+  oc get pods > $DIR_OUT/oc_get_pods
+
+  echo "Collecting all projects"
+  oc get projects > $DIR_OUT/oc_get_projects
+
+
+  echo "Preparing projects structure"
+  
+  ProjectDir="$DIR_OUT/projects"
+
+  AllProjects=$(cat $DIR_OUT/oc_get_projects | grep -v ^NAME | awk '{print $1}')
+  for b in $AllProjects
+  do
+    echo "mkdir -p $ProjectDir/$b" 
+    mkdir -p $ProjectDir/$b 
+    echo "Collecting describe from all pods from $b"
+    pod_desc $ProjectDir $b
+  done
+
+
+packaging $DIR_OUT
+
+}
+
+pod_desc()
+{
+  ProjectDir=$1
+  ProjectName=$2
+
+  #echo "Project Dir ..: $ProjectDir"
+  #echo "Project Name .: $ProjectName"
+
+  # Connect to the project
+  echo "Connecting to the project $ProjectName"
+  oc project $ProjectName > $ProjectDir/$ProjectName/connection_status
+  oc projects > $ProjectDir/$ProjectName/actual_connection
+
+
+  # Retrieve pod list
+  echo "Collecting pods"
+  oc get pods > $ProjectDir/$ProjectName/oc_get_pods
+
+
+  # Describe pod
+  AllPods=$(cat $ProjectDir/$ProjectName/oc_get_pods | grep -v ^NAME | awk '{print $1}')
+  for b in $AllPods
+  do
+    echo "Collecting describe from all pods from $b"
+    oc describe pod $b > $ProjectDir/$ProjectName/oc_describe_pod_$b
+  done
+}
+
+
+packaging()
+{
+  DIR_OUT=$1
+
+  echo "Compacting logs"
+  echo "tar cpf $DIR_OUT.tar $DIR_OUT"
+  tar cpf ${DIR_OUT}.tar $DIR_OUT
+
+  echo ""
+  echo "Please attach the file below to the case"
+  echo "${DIR_OUT}.tar"
+
+
+}
+
+
+# Main
+clear
+create_structure

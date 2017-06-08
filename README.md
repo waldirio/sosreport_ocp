@@ -33,11 +33,12 @@ Then just send this file to the Support Team.
 Below the structure generated.
 
 ~~~
-# tree /tmp/ocp/ocp_report_06.07.17-20.15
-/tmp/ocp/ocp_report_06.07.17-20.15
+[root@masterocp ocp_report_06.08.17-08.44]# tree .
+.
 |-- oc_get_nodes
 |-- oc_get_pods
 |-- oc_get_projects
+|-- oc_whoami
 `-- projects
     |-- default
     |   |-- actual_connection
@@ -74,6 +75,6 @@ Below the structure generated.
         |-- oc_describe_pod_cake-1-fdt65
         `-- oc_get_pods
 
-8 directories, 30 files
-#
+8 directories, 31 files
+[root@masterocp ocp_report_06.08.17-08.44]#
 ~~~

@@ -28,20 +28,20 @@ collect_info()
   DIR_OUT=$2
 
   echo "Collecting user"
-  echo "# oc whoami" 		> $DIR_OUT/oc_whoami
-  oc whoami 			>> $DIR_OUT/oc_whoami
+  echo "# oc whoami" 			> $DIR_OUT/oc_whoami
+  oc whoami 				>> $DIR_OUT/oc_whoami
 
   echo "Collecting nodes"
-  echo "# oc get nodes" 	> $DIR_OUT/oc_get_nodes
-  oc get nodes 			>> $DIR_OUT/oc_get_nodes
+  echo "# oc get nodes" 		> $DIR_OUT/oc_get_nodes
+  oc get nodes 				>> $DIR_OUT/oc_get_nodes
 
   echo "Collecting pods"
-  echo "# oc get pods" 		> $DIR_OUT/oc_get_pods
-  oc get pods 			>> $DIR_OUT/oc_get_pods
+  echo "# oc get pods" 			> $DIR_OUT/oc_get_pods
+  oc get pods 				>> $DIR_OUT/oc_get_pods
 
   echo "Collecting all projects"
-  echo "# oc get projects"	> $DIR_OUT/oc_get_projects
-  oc get projects 		>> $DIR_OUT/oc_get_projects
+  echo "# oc get projects"		> $DIR_OUT/oc_get_projects
+  oc get projects 			>> $DIR_OUT/oc_get_projects
 
 
   echo "Preparing projects structure"
@@ -59,7 +59,6 @@ collect_info()
 
 
 packaging $DIR_OUT
-
 }
 
 pod_desc()
@@ -67,8 +66,6 @@ pod_desc()
   ProjectDir=$1
   ProjectName=$2
 
-  #echo "Project Dir ..: $ProjectDir"
-  #echo "Project Name .: $ProjectName"
 
   # Connect to the project
   echo "Connecting to the project $ProjectName"
@@ -108,8 +105,6 @@ packaging()
   echo ""
   echo "Please attach the file below to the case"
   echo "${DIR_OUT}.tar"
-
-
 }
 
 
